@@ -1,11 +1,6 @@
-const CHOICES = ['rock', 'paper', 'scissors'];
+const CHOICES = { 'rock': '🪨', 'paper': '📃', 'scissors': '✂️' }
 const MAXROUNDS = 5;
 
-// hidden button
-document.querySelector('#newGameBtn').style.display = 'none';
-
-
-//listeners
 const selectionButtons = document.querySelectorAll('#selections button');
 selectionButtons.forEach(btn => {
   btn.addEventListener('click', () => {
@@ -15,7 +10,7 @@ selectionButtons.forEach(btn => {
 
 function getComputerChoice() {
   let randomNumber = Math.floor(Math.random() * 3);
-  return CHOICES[randomNumber];
+  return Object.keys(CHOICES)[randomNumber];
 }
 
 function playRound(playerSelection) {
@@ -26,8 +21,8 @@ function playRound(playerSelection) {
 
   const possiblities = { 'rockpaper': 1, 'rockscissors': 0, 'paperrock': 0, 'paperscissors': 1, 'scissorsrock': 1, 'scissorspaper': 0 }
 
-  document.querySelector('#player .choice').textContent = `<${playerSelection}>`;
-  document.querySelector('#computer .choice').textContent = `<${computerSelection}>`;
+  document.querySelector('#player .choice').textContent = `${CHOICES[playerSelection]}`;
+  document.querySelector('#computer .choice').textContent = `${CHOICES[computerSelection]}`;
 
   for (const [combination, num] of Object.entries(possiblities)) {
     if (combination === selections) {
@@ -39,16 +34,19 @@ function playRound(playerSelection) {
 
 function evaluate(num) {
   const lastMatchDiv = document.querySelector('#lastMatch');
+  roundWinner(num);
   if (num === 0) {
     console.log('player wins');
     const playerCounter = document.querySelector('#player .counter')
+    const playerScore = document.querySelector('#player');
 
     let aux = Number.parseInt(playerCounter.textContent);
     aux++;
     playerCounter.textContent = aux;
+    playerScore.style.border = 'green solid 2px'
     lastMatchDiv.textContent = 'Player wins!'
     if (aux === MAXROUNDS) {
-      winner('Player');
+      matchWinner('You');
     }
 
   } else if (num === 1) {
@@ -59,7 +57,7 @@ function evaluate(num) {
     computerCounter.textContent = aux;
     lastMatchDiv.textContent = 'Computer wins!'
     if (aux === MAXROUNDS) {
-      winner('Computer');
+      matchWinner('Computer');
     }
   } else {
     console.log('Tie')
@@ -67,14 +65,29 @@ function evaluate(num) {
   }
 }
 
-function winner(win) {
+function roundWinner(win) {
+  const playerScore = document.querySelector('#player');
+  const computerScore = document.querySelector('#computer');
+  if (win === 0) {
+    playerScore.style.border = 'green solid 2px';
+    computerScore.style.border = 'red solid 2px';
+  } else if (win === 1) {
+    playerScore.style.border = 'red solid 2px';
+    computerScore.style.border = 'green solid 2px';
+  } else {
+    playerScore.style.border = 'dodgerblue solid 2px';
+    computerScore.style.border = 'dodgerblue solid 2px';
+  }
+}
+
+function matchWinner(win) {
   const winnerDiv = document.querySelector('#winner');
   winnerDiv.textContent = win + ' won the match!'
 
-  //disable choices buttons
   const selectionButtons = document.querySelectorAll('#selections button');
   selectionButtons.forEach(btn => {
     btn.disabled = true;
+    btn.style.cursor = 'not-allowed';
   });
 
   const newGameBtn = document.querySelector('#newGameBtn');
@@ -83,10 +96,19 @@ function winner(win) {
 }
 
 function restart() {
-  const counters = document.querySelectorAll('#results .counter');
+  const counters = document.querySelectorAll('.counter');
   counters.forEach(counter => {
     counter.textContent = 0;
   });
+
+  const selectionButtons = document.querySelectorAll('#selections button');
+  selectionButtons.forEach(btn => {
+    btn.disabled = false;
+    btn.style.cursor = 'pointer';
+  });
+
+  document.querySelector('#computer').style.border = "gray solid 2px";
+  document.querySelector('#player').style.border = "gray solid 2px";
 
   document.querySelector('#winner').textContent = ''
   document.querySelector('#lastMatch').textContent = ''
@@ -94,11 +116,5 @@ function restart() {
   document.querySelector('#player .choice').textContent = '';
   document.querySelector('#computer .choice').textContent = '';
 
-  //hidding newGamebtn
   document.querySelector('#newGameBtn').style.display = 'none'
-
-  const selectionButtons = document.querySelectorAll('#selections button');
-  selectionButtons.forEach(btn => {
-    btn.disabled = false;
-  });
 }

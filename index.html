@@ -5,31 +5,29 @@
   <meta charset="UTF-8">
   <title>Rock Paper Scissors Game</title>
   <script src="./javascript.js" defer></script>
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-  <h1>Rock Paper Scissors Game</h1>
-  <hr>
+  <h1>Rock Paper Scissors</h1>
   <div id="selections">
-    <button id="rock">Rock</button>
-    <button id="paper">Paper</button>
-    <button id="scissors">Scissors</button>
+    <button id="rock" class="rps-button">🪨</button>
+    <button id="paper" class="rps-button">📃</button>
+    <button id="scissors" class="rps-button">✂️</button>
   </div>
-  <hr>
-  <div id="results">
-    <div id="player">Player: <span class="counter">0</span>&emsp;<span class="choice"></span></div>
-    <div id="computer">Computer: <span class="counter">0</span>&emsp;<span class="choice"></span></div>
-    <br>
-    <div id="lastMatch"></div>
-    <br>
-    <hr>
-    <div id="winner"></div>
-    <button id="newGameBtn">New Game</button>
+  <div id="score-container">
+    <div id="player" class="score">
+      <p>You: <span class="counter">0</span></p>
+      <p class="choice"></p>
+    </div>
+    <div id="computer" class="score">
+      <p>Computer: <span class="counter">0</span></p>
+      <p class="choice"></p>
+    </div>
   </div>
-
-  <form>
-  </form>
-
+  <p id="lastMatch"></p>
+  <p id="winner"></p>
+  <button id="newGameBtn">New Game</button>
 </body>
 
 </html>
